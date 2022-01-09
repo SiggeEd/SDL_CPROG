@@ -2,8 +2,15 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+
+/*
+ * initsierar renderer
+ * initsierar fönster
+ * skapa audio
+ * */
 Engine::Engine()
 {
+    SDL_Init(SDL_INIT_EVERYTHING);
     std::string resourcesPath ="../Resources/";
 
     SDL_Surface *image = NULL;
@@ -18,8 +25,6 @@ Engine::Engine()
     sdlSurface = SDL_GetWindowSurface(window);
     SDL_BlitSurface(image, NULL, sdlSurface, NULL);
     SDL_UpdateWindowSurface(window);
-
-
 }
 
 Engine::~Engine()

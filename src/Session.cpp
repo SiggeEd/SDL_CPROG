@@ -2,7 +2,10 @@
 #include "Engine.h"
 #include <iostream>
 #include <SDL2/SDL.h>
-
+/*
+ * Run ska kalla på allt som har med spelet att göra(sprites etc etc)
+ * är en "spelomgång"
+ * */
 using namespace std;
 #define FPS 80
 
