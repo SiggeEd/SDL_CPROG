@@ -11,5 +11,5 @@ include_directories(${SDL2_INCLUDE_DIR})
 include_directories(${PROJECT_NAME} Includes Resources)
 link_directories(${SDL2_LIB_DIR})
 
-add_executable(SDL_Project src/main.cpp src/Session.cpp src/Engine.cpp)
+add_executable(SDL_Project src/main.cpp src/Session.cpp src/Engine.cpp src/Component.cpp)
 target_link_libraries(${PROJECT_NAME} SDL2main SDL2 SDL2_image)
