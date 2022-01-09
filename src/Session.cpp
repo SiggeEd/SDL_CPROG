@@ -2,12 +2,15 @@
 #include "Engine.h"
 #include <iostream>
 #include <SDL2/SDL.h>
+
 using namespace std;
 #define FPS 80
 
 void Session::run() {
     bool end = false;
     Uint32 tickInterval = 1000 / FPS;
+
+    SDL_Texture *texture = NULL;
 
     while(!end)
     {
@@ -31,6 +34,7 @@ void Session::run() {
 
             }
         }
+
 
         SDL_SetRenderDrawColor(engine.renderer, 255, 255, 255, 255);
         SDL_RenderClear(engine.renderer);
