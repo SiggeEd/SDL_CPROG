@@ -8,7 +8,6 @@ const int SCREEN_HEIGHT = 480;
 Session session;
 std::string resPath = "../Resources/";
 
-
 int main(int argc, char** argv)
 {
     session.run();
