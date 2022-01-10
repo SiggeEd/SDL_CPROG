@@ -15,16 +15,16 @@ Session ses;
 
 
 
-class Bullet : public Component {
+class Player : public Component {
 public:
-    static Bullet* getInstance(int x) {
-        return new Bullet(x);
+    static Player* getInstance(int x) {
+        return new Player(x);
     }
-    Bullet(int x) : Component(x, 300, 40,40){
+    Player(int x) : Component(x, 300, 100,20){
         // Path to your own 'images' folder.
-        texture = IMG_LoadTexture(sys.ren, (resPath + "images/dot40x40.bmp").c_str() );
+        texture = IMG_LoadTexture(sys.ren, (resPath + "images/PlayerSprite.png").c_str() );
     }
-    ~Bullet() {
+    ~Player() {
         SDL_DestroyTexture(texture);
     }
     void draw() const {
@@ -33,8 +33,6 @@ public:
         //SDL_RenderCopy(sys.ren, texture, NULL, &getRect());
         SDL_RenderCopy(sys.ren, texture, NULL, &rect);
     }
-
-
     void tick() {
         SDL_Point mouse;
         counter++;
@@ -46,16 +44,16 @@ private:
 };
 
 class Pistol : public Component {
+
 public:
     Pistol() :Component(0, 0, 0, 0) {}
     void draw() const {}
     void tick() {}
     void mouseDown(int x, int y) {
-        Bullet* b = Bullet::getInstance(x);
+        Player* b = Player::getInstance(x);
         ses.add(b);
     }
 };
-
 int main(int argc, char** argv) {
     Pistol* pistol = new Pistol();
     ses.add(pistol);
