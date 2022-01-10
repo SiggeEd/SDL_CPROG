@@ -1,55 +1,65 @@
-#include <iostream>
+#include <SDL2/SDL.h>
 #include "Session.h"
+#include "Component.h"
+
+#include <SDL_image.h>
 #include "Engine.h"
-#include <SDL.h>
-
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
-Session session;
-std::string resPath = "../Resources/";
-
-int main(int argc, char** argv)
-{
-    session.run();
-    return 0;
-}
+#include <string>
 
 
-/*
-int main(int argc, char* args[]) {
-    std::cout << "Haj, Sigge!" << std::endl;
+// Paths to resource folders. Change to your own path!
+//std::string resPath = "/Users/kjellna/dev/cpp21/f13b_v2/resources/";
+std::string resPath = "../resources/";
 
-    //The window we'll be rendering to
-    SDL_Window *window = NULL;
+Session ses;
 
-    //The surface contained by the window
-    SDL_Surface *screenSurface = NULL;
 
-    //Initialize SDL
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
-    } else {
-        //Create window
-        window = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH,
-                                  SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-        if (window == NULL) {
-            printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
-        } else {
-            //Get window surface
-            screenSurface = SDL_GetWindowSurface(window);
 
-            //Fill the surface white
-            SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 0xFF, 0xFF, 0xFF));
-
-            //Update the surface
-            SDL_UpdateWindowSurface(window);
-
-            //Wait two seconds
-            SDL_Delay(2000);
-        }
+class Bullet : public Component {
+public:
+    static Bullet* getInstance(int x) {
+        return new Bullet(x);
     }
+    Bullet(int x) : Component(x, 300, 40,40){
+        // Path to your own 'images' folder.
+        texture = IMG_LoadTexture(sys.ren, (resPath + "images/dot40x40.bmp").c_str() );
+    }
+    ~Bullet() {
+        SDL_DestroyTexture(texture);
+    }
+    void draw() const {
+        // Code adjustment to handle the address to temporary object.
+        const SDL_Rect &rect = getRect();
+        //SDL_RenderCopy(sys.ren, texture, NULL, &getRect());
+        SDL_RenderCopy(sys.ren, texture, NULL, &rect);
+    }
+
+
+    void tick() {
+        SDL_Point mouse;
+        counter++;
+        rect.x = mouse.x;
+    }
+private:
+    SDL_Texture* texture;
+    int counter = 0;
+};
+
+class Pistol : public Component {
+public:
+    Pistol() :Component(0, 0, 0, 0) {}
+    void draw() const {}
+    void tick() {}
+    void mouseDown(int x, int y) {
+        Bullet* b = Bullet::getInstance(x);
+        ses.add(b);
+    }
+};
+
+int main(int argc, char** argv) {
+    Pistol* pistol = new Pistol();
+    ses.add(pistol);
+    ses.run();
+
     return 0;
 }
-
-*/
-

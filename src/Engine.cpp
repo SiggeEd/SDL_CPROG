@@ -1,36 +1,21 @@
 #include "Engine.h"
-#include <iostream>
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
 
-/*
- * initsierar renderer
- * initsierar fönster
- * skapa audio
- * */
-Engine::Engine()
-{
+
+Engine::Engine() {
     SDL_Init(SDL_INIT_EVERYTHING);
-    std::string resourcesPath ="../Resources/";
+    win = SDL_CreateWindow("GameDemo", 10, 10, 700, 500, 0);
+    ren = SDL_CreateRenderer(win, -1, 0);
 
-    SDL_Surface *image = NULL;
-    SDL_Surface *optmizedImage = NULL;
-    SDL_Surface *sdlSurface = NULL;
-    image = IMG_Load((resourcesPath+"Images/PlayerSprite.png").c_str());
+    // Path to your own 'sounds' folder!
+    //musik = Mix_LoadWAV("/Users/kjellna/dev/cpp21/f13b/sounds/bgMusic.wav");
 
-    SDL_Texture *texture = NULL;
-    SDL_Init(SDL_INIT_EVERYTHING);
-    window = SDL_CreateWindow("mainWindow", 500, 200, 500, 500, 0);
-    renderer = SDL_CreateRenderer(window, -1, 0);
-    sdlSurface = SDL_GetWindowSurface(window);
-    SDL_BlitSurface(image, NULL, sdlSurface, NULL);
-    SDL_UpdateWindowSurface(window);
 }
 
-Engine::~Engine()
-{
-    SDL_DestroyWindow(window);
-    SDL_DestroyRenderer(renderer);
+Engine::~Engine() {
+    SDL_DestroyWindow(win);
+    SDL_DestroyRenderer(ren);
     SDL_Quit();
 }
-Engine engine;
+
+Engine sys;
