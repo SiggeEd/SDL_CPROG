@@ -12,6 +12,8 @@ struct System
 
     SDL_Window* win;
     SDL_Renderer* ren;
+
+
 };
 
 extern std::string resPath;

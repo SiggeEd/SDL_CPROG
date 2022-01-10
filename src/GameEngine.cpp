@@ -8,67 +8,76 @@ using namespace std;
 
 #define FPS 80
 
-void GameEngine::add(Component* comp) {
-    added.push_back(comp);
-}
+    GameEngine::GameEngine() {
+        fps = 30;
+    }
 
-void GameEngine::remove(Component* comp) {
-    removed.push_back(comp);
-}
+    void GameEngine::add(Component *comp) {
+        added.push_back(comp);
+    }
 
-void GameEngine::run() {
+    void GameEngine::remove(Component *comp) {
+        removed.push_back(comp);
+    }
 
-    bool quit = false;
-    Uint32 tickInterval = 1000 / FPS;
-    while (!quit) {
-        bool moving = false;
-        Uint32 nextTick = SDL_GetTicks() + tickInterval;
-        SDL_Event event;
-        while (SDL_PollEvent(&event)) {
+    void GameEngine::run() {
 
-            switch (event.type) {
-                case SDL_QUIT: quit = true; break;
-                case SDL_MOUSEMOTION:
-                    for (Component* c : comps) {
-                        c->mouseDown(event.button.x, event.button.y);
-                        moving = true;
+        bool quit = false;
+        int x;
+        int y;
+        Uint32 mouse = SDL_GetMouseState(&x, &y);
+        Uint32 tickInterval = 1000 / fps;
+        while (!quit) {
+           // bool moving = false;
+            Uint32 nextTick = SDL_GetTicks() + tickInterval;
+            SDL_Event event;
+            while (SDL_PollEvent(&event)) {
+                switch (event.type) {
+                    case SDL_QUIT:
+                        quit = true;
                         break;
-                    }
-            } //switch
-        } //inre while
+                    case SDL_MOUSEMOTION:
+                        for (Component *c: comps) {
+                            c->mouseMotion(event.button.x, event.button.y);
+                            //moving = true;
+                            break;
+                        }
+                } //switch
 
-        for (Component* c : comps)
-            c->tick();
 
-        for (Component* c : added){
-            comps.push_back(c);
-            added.clear();
-        }
-        for (Component* c : removed)
-            for (vector<Component*>::iterator i = comps.begin();
-                 i != comps.end();)
-                if (*i == c) {
-                    i = comps.erase(i);
-                }
-                else
-                    i++;
-        removed.clear();
+            } //inre while
 
-        SDL_SetRenderDrawColor(sys.ren, 255, 255, 255, 255);
+            for (Component *c: comps)
+                c->tick();
 
-        if(moving) {
-            SDL_RenderClear(sys.ren);
-        }
+            for (Component *c: added) {
+                comps.push_back(c);
+                added.clear();
+            }
+            for (Component *c: removed)
+                for (vector<Component *>::iterator i = comps.begin();
+                     i != comps.end();)
+                    if (*i == c) {
+                        i = comps.erase(i);
+                    } else
+                        i++;
+            removed.clear();
 
-        for (Component* c : comps){
-            c->draw();
-            c->addBricks();
-        }
+            SDL_SetRenderDrawColor(sys.ren, 0, 0, 0, 255);
 
-        SDL_RenderPresent(sys.ren);
+           // if (moving) {
+                SDL_RenderClear(sys.ren);
+           // }
 
-        int delay = nextTick - SDL_GetTicks();
-        if (delay > 0)
-            SDL_Delay(delay);
-    } // yttre while
-}
+            for (Component *c: comps) {
+                c->draw();
+                c->addBricks();
+            }
+
+            SDL_RenderPresent(sys.ren);
+
+            int delay = nextTick - SDL_GetTicks();
+            if (delay > 0)
+                SDL_Delay(delay);
+        } // yttre while
+    }

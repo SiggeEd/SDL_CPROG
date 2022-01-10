@@ -96,7 +96,7 @@ public:
     GameBoard() :Component(0, 0, 0, 0) {}
     void draw() const {}
     void tick() {}
-    void mouseDown(int x, int y) {
+    void mouseMotion(int x, int y) {
         Player* b = Player::getInstance(x);
         ses.add(b);
     }
