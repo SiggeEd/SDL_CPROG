@@ -1,56 +1,62 @@
 #include "Session.h"
-#include "Engine.h"
-#include <iostream>
 #include <SDL2/SDL.h>
-/*
- * Run ska kalla på allt som har med spelet att göra(sprites etc etc)
- * är en "spelomgång"
- * */
+#include "Component.h"
+#include "Engine.h"
+
 using namespace std;
+
 #define FPS 80
 
+void Session::add(Component* comp) {
+    added.push_back(comp);
+}
+
+void Session::remove(Component* comp) {
+    removed.push_back(comp);
+}
+
 void Session::run() {
-    bool end = false;
+    bool quit = false;
+
     Uint32 tickInterval = 1000 / FPS;
-
-    SDL_Texture *texture = NULL;
-
-    while(!end)
-    {
+    while (!quit) {
         Uint32 nextTick = SDL_GetTicks() + tickInterval;
         SDL_Event event;
-        while (SDL_PollEvent(&event))
-        {
+        while (SDL_PollEvent(&event)) {
             switch (event.type) {
-                case SDL_QUIT:
-                    end = true;
+                case SDL_QUIT: quit = true; break;
+                case SDL_MOUSEMOTION:
+                    for (Component* c : comps)
+                        c->mouseDown(event.button.x, event.button.y);
                     break;
+            } //switch
+        } //inre while
 
-                case SDL_MOUSEBUTTONDOWN:
-                    cout<<"MOUSEBUTTONDOWN"<<endl;
-                    break;
+        for (Component* c : comps)
+            c->tick();
 
-                case SDL_MOUSEBUTTONUP:
-                    cout<<"MOUSEBUTTONUP"<<endl;
-                    break;
+        for (Component* c : added)
+            comps.push_back(c);
+        added.clear();
 
+        for (Component* c : removed)
+            for (vector<Component*>::iterator i = comps.begin();
+                 i != comps.end();)
+                if (*i == c) {
+                    i = comps.erase(i);
+                }
+                else
+                    i++;
+        removed.clear();
 
-            }
-        }
-
-
-        SDL_SetRenderDrawColor(engine.renderer, 255, 255, 255, 255);
-        SDL_RenderClear(engine.renderer);
-        /*
+        SDL_SetRenderDrawColor(sys.ren, 255, 255, 255, 255);
+        SDL_RenderClear(sys.ren);
         for (Component* c : comps)
             c->draw();
         SDL_RenderPresent(sys.ren);
-        */
 
         int delay = nextTick - SDL_GetTicks();
         if (delay > 0)
             SDL_Delay(delay);
-    }
+    } // yttre while
 }
-
-

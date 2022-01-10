@@ -1,20 +1,20 @@
-//
-// Created by edsim on 2022-01-08.
-//
+#ifndef SYSTEM_H
+#define SYSTEM_H
 
-#ifndef SDL_PROJECT_ENGINE_H
-#define SDL_PROJECT_ENGINE_H
+#include <SDL2/SDL_misc.h>
 #include <SDL2/SDL.h>
 #include <string>
+
 struct Engine
 {
     Engine();
     ~Engine();
-    SDL_Window* window;
-    SDL_Renderer* renderer;
+
+    SDL_Window* win;
+    SDL_Renderer* ren;
 };
 
 extern std::string resPath;
-extern Engine engine;
-#endif //SDL_PROJECT_ENGINE_H
+extern Engine sys;
 
+#endif
