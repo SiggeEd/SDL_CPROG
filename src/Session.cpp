@@ -17,8 +17,8 @@ void Session::remove(Component* comp) {
 }
 
 void Session::run() {
-    bool quit = false;
 
+    bool quit = false;
     Uint32 tickInterval = 1000 / FPS;
     while (!quit) {
         bool moving = false;
@@ -56,12 +56,15 @@ void Session::run() {
 
         SDL_SetRenderDrawColor(sys.ren, 255, 255, 255, 255);
 
-        if(moving){
+        if(moving) {
             SDL_RenderClear(sys.ren);
         }
 
-        for (Component* c : comps)
+        for (Component* c : comps){
             c->draw();
+            c->addBricks();
+        }
+
         SDL_RenderPresent(sys.ren);
 
         int delay = nextTick - SDL_GetTicks();

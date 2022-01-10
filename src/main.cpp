@@ -14,7 +14,6 @@ std::string resPath = "../resources/";
 Session ses;
 
 
-
 class Player : public Component {
 public:
     static Player* getInstance(int x) {
@@ -64,23 +63,63 @@ class Ball : public Component
 
 class Brick : public Component
 {
-    
+public:
+    static Brick* getInstance(int x, int y) {
+        return new Brick(x, y);
+    }
+
+    Brick(int x, int y) : Component(x, y, 75,25){
+        brickTexture = IMG_LoadTexture(sys.ren, (resPath + "images/Brick.png").c_str() );
+    }
+
+    ~Brick(){
+        SDL_DestroyTexture(brickTexture);
+    }
+
+    void draw() const{
+        const SDL_Rect &brickRect = getRect();
+        SDL_RenderCopy(sys.ren, brickTexture, NULL, &brickRect);
+    }
+
+    void tick() {
+    }
+
+
+
+private:
+    SDL_Texture* brickTexture;
 };
 
-class Pistol : public Component {
+class GameBoard : public Component {
 
 public:
-    Pistol() :Component(0, 0, 0, 0) {}
+    GameBoard() :Component(0, 0, 0, 0) {}
     void draw() const {}
     void tick() {}
     void mouseDown(int x, int y) {
         Player* b = Player::getInstance(x);
         ses.add(b);
     }
+    void addBricks(){
+        int spaceBetween = 78;
+        int brickPosX = 0;
+        int brickPosy = 0;
+        for(int i = 0; i < 2; i++){
+            for(int j = 0; j < 9; j++){
+                Brick* b1 = Brick::getInstance(brickPosX, brickPosy);
+                ses.add(b1);
+                brickPosX += spaceBetween;
+            }
+            brickPosX = 0;
+            brickPosy = 27;
+        }
+    }
+
+
 };
 int main(int argc, char** argv) {
-    Pistol* pistol = new Pistol();
-    ses.add(pistol);
+    GameBoard* gameBoard = new GameBoard();
+    ses.add(gameBoard);
     ses.run();
 
     return 0;
