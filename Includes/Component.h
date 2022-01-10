@@ -6,6 +6,7 @@ class Component
 {
 public:
     virtual void mouseDown(int x, int y) {}
+    virtual void addBricks(){};
     virtual void draw() const = 0;
     SDL_Rect getRect() const { return rect; }
     virtual void tick() = 0;
