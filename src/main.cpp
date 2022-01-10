@@ -57,6 +57,16 @@ private:
     int counter = 0;
 };
 
+class Ball : public Component
+{
+
+};
+
+class Brick : public Component
+{
+    
+};
+
 class Pistol : public Component {
 
 public:
