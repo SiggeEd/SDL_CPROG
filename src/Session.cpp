@@ -2,6 +2,7 @@
 #include <SDL2/SDL.h>
 #include "Component.h"
 #include "Engine.h"
+#include <iostream>
 
 using namespace std;
 
@@ -17,7 +18,7 @@ void Session::remove(Component* comp) {
 
 void Session::run() {
     bool quit = false;
-    
+
     Uint32 tickInterval = 1000 / FPS;
     while (!quit) {
         bool moving = false;
@@ -28,10 +29,11 @@ void Session::run() {
             switch (event.type) {
                 case SDL_QUIT: quit = true; break;
                 case SDL_MOUSEMOTION:
-                    for (Component* c : comps)
+                    for (Component* c : comps) {
                         c->mouseDown(event.button.x, event.button.y);
                         moving = true;
-                    break;
+                        break;
+                    }
             } //switch
         } //inre while
 

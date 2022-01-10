@@ -5,7 +5,7 @@
 #include <SDL_image.h>
 #include "Engine.h"
 #include <string>
-
+#include <iostream>
 
 // Paths to resource folders. Change to your own path!
 //std::string resPath = "/Users/kjellna/dev/cpp21/f13b_v2/resources/";
@@ -20,7 +20,7 @@ public:
     static Player* getInstance(int x) {
         return new Player(x);
     }
-    Player(int x) : Component(x, 300, 100,20){
+    Player(int x) : Component(x, 450, 100,20){
         // Path to your own 'images' folder.
         texture = IMG_LoadTexture(sys.ren, (resPath + "images/PlayerSprite.png").c_str() );
     }
@@ -28,15 +28,29 @@ public:
         SDL_DestroyTexture(texture);
     }
     void draw() const {
+        int x;
+        int y;
+        SDL_GetMouseState(&x, &y);
         // Code adjustment to handle the address to temporary object.
+        //const SDL_Rect &rect = setRect(600);
         const SDL_Rect &rect = getRect();
+        const SDL_Rect &fixedXRect = {600, rect.y, rect.w, rect.h};
         //SDL_RenderCopy(sys.ren, texture, NULL, &getRect());
-        SDL_RenderCopy(sys.ren, texture, NULL, &rect);
+        std::cout<<getRect().x<<std::endl;
+        if(x <= 600) {
+            SDL_RenderCopy(sys.ren, texture, NULL, &rect);
+        }
+        else
+        {
+
+            SDL_RenderCopy(sys.ren, texture, NULL, &fixedXRect);
+        }
     }
     void tick() {
-        SDL_Point mouse;
-        counter++;
-        rect.x = mouse.x;
+        int x;
+        int y;
+        SDL_GetMouseState(&x, &y);
+        rect.x = x;
     }
 private:
     SDL_Texture* texture;

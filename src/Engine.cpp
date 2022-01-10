@@ -4,7 +4,7 @@
 
 Engine::Engine() {
     SDL_Init(SDL_INIT_EVERYTHING);
-    win = SDL_CreateWindow("GameDemo", 10, 10, 700, 500, 0);
+    win = SDL_CreateWindow("GameDemo", 400, 100, 700, 500, 0);
     ren = SDL_CreateRenderer(win, -1, 0);
 
     // Path to your own 'sounds' folder!
