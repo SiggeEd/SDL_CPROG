@@ -5,16 +5,16 @@
 #include <SDL2/SDL.h>
 #include <string>
 
-struct Engine
+struct System
 {
-    Engine();
-    ~Engine();
+    System();
+    ~System();
 
     SDL_Window* win;
     SDL_Renderer* ren;
 };
 
 extern std::string resPath;
-extern Engine sys;
+extern System sys;
 
 #endif

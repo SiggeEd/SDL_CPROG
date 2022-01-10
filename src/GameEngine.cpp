@@ -1,22 +1,22 @@
-#include "Session.h"
+#include "GameEngine.h"
 #include <SDL2/SDL.h>
 #include "Component.h"
-#include "Engine.h"
+#include "System.h"
 #include <iostream>
 
 using namespace std;
 
 #define FPS 80
 
-void Session::add(Component* comp) {
+void GameEngine::add(Component* comp) {
     added.push_back(comp);
 }
 
-void Session::remove(Component* comp) {
+void GameEngine::remove(Component* comp) {
     removed.push_back(comp);
 }
 
-void Session::run() {
+void GameEngine::run() {
 
     bool quit = false;
     Uint32 tickInterval = 1000 / FPS;

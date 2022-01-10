@@ -1,9 +1,9 @@
 #include <SDL2/SDL.h>
-#include "Session.h"
+#include "GameEngine.h"
 #include "Component.h"
 
 #include <SDL_image.h>
-#include "Engine.h"
+#include "System.h"
 #include <string>
 #include <iostream>
 
@@ -11,7 +11,7 @@
 //std::string resPath = "/Users/kjellna/dev/cpp21/f13b_v2/resources/";
 std::string resPath = "../resources/";
 
-Session ses;
+GameEngine ses;
 
 
 class Player : public Component {
