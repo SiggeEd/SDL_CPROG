@@ -1,8 +1,8 @@
-#include "Engine.h"
+#include "System.h"
 #include <SDL2/SDL.h>
 
 
-Engine::Engine() {
+System::System() {
     SDL_Init(SDL_INIT_EVERYTHING);
     win = SDL_CreateWindow("GameDemo", 400, 100, 700, 500, 0);
     ren = SDL_CreateRenderer(win, -1, 0);
@@ -12,10 +12,10 @@ Engine::Engine() {
 
 }
 
-Engine::~Engine() {
+System::~System() {
     SDL_DestroyWindow(win);
     SDL_DestroyRenderer(ren);
     SDL_Quit();
 }
 
-Engine sys;
+System sys;

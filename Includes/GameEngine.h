@@ -4,7 +4,7 @@
 #include "Component.h"
 #include <vector>
 
-class Session
+class GameEngine
 {
 public:
     void add(Component* comp);
