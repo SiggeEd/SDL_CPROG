@@ -87,8 +87,12 @@ public:
         int min_vel = velocity_x - 0.7;
 
 
-        rect.x += velocity_x;
-        rect.y += velocity_y;
+        //TODO kalla på collision som tar in x, y och kanske width och height som returnerar värden på x och y som tilldelas till rect.x och rect.y 
+
+            rect.x += velocity_x;
+            rect.y += velocity_y;
+
+
 
 
     }
