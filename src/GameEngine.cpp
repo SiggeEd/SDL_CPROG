@@ -8,9 +8,12 @@ using namespace std;
 
 #define FPS 80
 
+
+
     GameEngine::GameEngine() {
         fps = 30;
     }
+
 
     void GameEngine::add(Component *comp) {
         added.push_back(comp);
@@ -21,10 +24,11 @@ using namespace std;
     }
 
     void GameEngine::run() {
-
+        bool notRendered = true;
         bool quit = false;
         int x;
         int y;
+
         Uint32 mouse = SDL_GetMouseState(&x, &y);
         Uint32 tickInterval = 1000 / fps;
         while (!quit) {
@@ -36,27 +40,35 @@ using namespace std;
                     case SDL_QUIT:
                         quit = true;
                         break;
-                    case SDL_MOUSEMOTION:
-                        for (Component *c: comps) {
-                            c->mouseMotion(event.button.x, event.button.y);
-                            //moving = true;
-                            break;
-                        }
+                    //case SDL_MOUSEMOTION:
+                        /*for (Component *c: comps) {
+                            //c->mouseMotion(event.button.x, event.button.y);
+                        }*/
+                        //break;
                 } //switch
-
-
             } //inre while
 
-            for (Component *c: comps)
+            /********** Lägger till alla texturer på brädet ************/
+            for(Component *c: comps){
+                if(notRendered){
+                    c->addBall();
+                    c->addPlayer();
+                    c->addBricks();
+                    notRendered = false;
+                }
+            }
+            /********** Lägger till alla texturer på brädet ************/
+
+            for (Component *c: comps){
                 c->tick();
+            }
 
             for (Component *c: added) {
                 comps.push_back(c);
                 added.clear();
             }
             for (Component *c: removed)
-                for (vector<Component *>::iterator i = comps.begin();
-                     i != comps.end();)
+                for (vector<Component *>::iterator i = comps.begin(); i != comps.end();)
                     if (*i == c) {
                         i = comps.erase(i);
                     } else
@@ -64,14 +76,10 @@ using namespace std;
             removed.clear();
 
             SDL_SetRenderDrawColor(sys.ren, 0, 0, 0, 255);
-
-           // if (moving) {
-                SDL_RenderClear(sys.ren);
-           // }
+            SDL_RenderClear(sys.ren);
 
             for (Component *c: comps) {
                 c->draw();
-                c->addBricks();
             }
 
             SDL_RenderPresent(sys.ren);

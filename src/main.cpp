@@ -5,6 +5,7 @@
 #include <SDL_image.h>
 #include "System.h"
 #include <string>
+#include <math.h>
 #include <iostream>
 
 // Paths to resource folders. Change to your own path!
@@ -35,7 +36,7 @@ public:
         const SDL_Rect &rect = getRect();
         const SDL_Rect &fixedXRect = {600, rect.y, rect.w, rect.h};
         //SDL_RenderCopy(sys.ren, texture, NULL, &getRect());
-        std::cout<<getRect().x<<std::endl;
+
         if(x <= 600) {
             SDL_RenderCopy(sys.ren, texture, NULL, &rect);
         }
@@ -58,6 +59,36 @@ private:
 
 class Ball : public Component
 {
+public:
+
+    static Ball* getInstance(int x, int y) {
+        return new Ball(x, y);
+    }
+    Ball(int x, int y) : Component(x, y, 20, 20){
+      ballTexture = IMG_LoadTexture(sys.ren, (resPath + "images/Bakk.png").c_str() );
+
+    }
+    ~Ball(){
+        SDL_DestroyTexture(ballTexture);
+    }
+
+    void draw() const{
+        const SDL_Rect &ballRect = getRect();
+        SDL_RenderCopy(sys.ren, ballTexture, NULL, &ballRect);
+
+    }
+    void tick() {
+        int velocity = 3 + 1/4;
+
+        int x = sqrt(powf(velocity, 2) / 2);
+        rect.x = x;
+        rect.y = x;
+
+
+    }
+
+private:
+    SDL_Texture* ballTexture;
 
 };
 
@@ -86,6 +117,7 @@ public:
 
 
 
+
 private:
     SDL_Texture* brickTexture;
 };
@@ -93,13 +125,21 @@ private:
 class GameBoard : public Component {
 
 public:
+
+
     GameBoard() :Component(0, 0, 0, 0) {}
     void draw() const {}
     void tick() {}
-    void mouseMotion(int x, int y) {
+    void addPlayer(){
+        Player* player = Player::getInstance(20);
+        ses.add(player);
+    }
+   /* void mouseMotion(int x, int y) {
         Player* b = Player::getInstance(x);
         ses.add(b);
-    }
+
+    }*/
+
     void addBricks(){
         int spaceBetween = 78;
         int brickPosX = 0;
@@ -112,7 +152,12 @@ public:
             }
             brickPosX = 0;
             brickPosy = 27;
+
         }
+    }
+    void addBall(){
+        Ball* ball = Ball::getInstance(50, 50 );
+        ses.add(ball);
     }
 
 
