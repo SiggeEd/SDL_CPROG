@@ -80,9 +80,15 @@ public:
     void tick() {
         int velocity = 3 + 1/4;
 
-        int x = sqrt(powf(velocity, 2) / 2);
-        rect.x = x;
-        rect.y = x;
+        int velocity_x = sqrt(powf(velocity, 2) / 2);
+        int velocity_y = velocity_x;
+
+        int max_vel = velocity_x + 0.7;
+        int min_vel = velocity_x - 0.7;
+
+
+        rect.x += velocity_x;
+        rect.y += velocity_y;
 
 
     }
